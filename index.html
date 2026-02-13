@@ -1,0 +1,105 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>EO Webcomic</title>
+  <meta name="description" content="A webcomic." />
+  <meta property="og:title" content="EO Webcomic" />
+  <meta property="og:description" content="Read the latest comic." />
+  <meta property="og:type" content="website" />
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Press+Start+2P&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="assets/css/style.css" />
+</head>
+<body>
+  <div class="wrap">
+    <header class="header">
+      <div class="brand">
+        <h1 id="siteTitle">EO Webcomic</h1>
+        <p id="siteTagline">by EOGuides.com</p>
+      </div>
+      <nav class="nav">
+        <!-- Archive is the default active tab -->
+        <button type="button" data-tab="latest" aria-current="false">Latest</button>
+        <button type="button" data-tab="archive" aria-current="page">Archive</button>
+        <button type="button" data-tab="about" aria-current="false">About</button>
+      </nav>
+    </header>
+
+    <main class="main">
+      <!-- Latest is hidden by default -->
+      <section class="card" data-panel="latest" style="display:none">
+        <div style="display:flex; align-items:baseline; gap:12px; flex-wrap:wrap">
+          <h2 style="margin:0">Latest</h2>
+          <span class="muted small" id="latestDate"></span>
+        </div>
+        <h3 style="margin:8px 0 12px 0" id="latestTitle"></h3>
+        <button id="latestOpen" class="tile" type="button" style="padding:0; border:none; background:none">
+          <img id="latestImg" class="reader-img" src="" alt="" />
+        </button>
+        <div class="note" id="emptyNote" style="display:none">
+          No comics yet. Add entries to <code>comics.json</code> and images to <code>img/comics/</code>.
+        </div>
+      </section>
+
+      <!-- Archive is shown by default -->
+      <section class="card" data-panel="archive">
+        <div class="archive-head">
+          <h2>Archive</h2>
+          <div class="archive-actions">
+            <button class="btn" id="btnStart" type="button">Start →</button>
+            <button class="btn" id="btnOpenLatest" type="button">Latest</button>
+          </div>
+        </div>
+        <p class="muted small">Ordered low → high. Flip through pages like a comic (← / →).</p>
+        <div class="grid" id="archiveGrid"></div>
+      </section>
+
+      <section class="card" data-panel="about" style="display:none">
+        <h2>About</h2>
+        <p class="muted">Edit this section in <code>index.html</code>.</p>
+        <p>
+          Contact: <a href="mailto:you@example.com">you@example.com</a>
+        </p>
+        <p class="muted small">
+          Tip: You can deep-link to a comic with <code>#c=001</code> (example: <code>.../index.html#c=001</code>).
+        </p>
+      </section>
+
+      <p id="pageError" class="muted small"></p>
+    </main>
+
+    <footer class="footer">
+      © <span id="siteTitleFooter">EO Webcomic</span>
+    </footer>
+  </div>
+
+  <!-- Reader modal -->
+  <div class="reader" id="reader" role="dialog" aria-modal="true" aria-label="Comic reader">
+    <div class="reader-panel">
+      <div class="reader-top">
+        <div class="meta">
+          <h2 id="readerTitle">Comic Title</h2>
+          <div class="muted" id="readerMeta"></div>
+        </div>
+        <div class="controls">
+          <button class="btn" id="btnPrev" type="button">← Prev</button>
+          <button class="btn" id="btnLatest" type="button">Latest</button>
+          <button class="btn" id="btnNext" type="button">Next →</button>
+          <button class="btn" id="btnClose" type="button">Close ✕</button>
+        </div>
+      </div>
+      <div class="reader-body">
+        <img id="readerImg" class="reader-img" src="" alt="" />
+        <div class="note">
+          Put your images in <code>img/comics/</code> and name them <code>00.jpg</code>…<code>99.jpg</code> (or define your own list in <code>comics.json</code>).
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <script src="assets/js/app.js"></script>
+</body>
+</html>

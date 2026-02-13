@@ -1,0 +1,41 @@
+{
+  "title": "EO Webcomic",
+  "author": "EOGuides.com",
+  "comics": [
+    {
+      "id": "001",
+      "title": "The End of v28 Classic",
+      "date": "2026-02-01",
+      "image": "img/comics/001.jpg",
+      "alt": "Darknoud was defeated by a child."
+    },
+    {
+      "id": "002",
+      "title": "Edux Meets His Friends",
+      "date": "2026-02-02",
+      "image": "img/comics/002.jpg",
+      "alt": "The doxxing trio arrive, and bring exiled into the fold."
+    },
+    {
+      "id": "003",
+      "title": "Server Drama",
+      "date": "2026-02-03",
+      "image": "img/comics/003.jpg",
+      "alt": "Cera demand Darknoud takes action!"
+    },
+    {
+      "id": "004",
+      "title": "A Peace Offering",
+      "date": "2026-02-04",
+      "image": "img/comics/004.jpg",
+      "alt": "Darknoud add's Ceras graphics into the game."
+    },
+    {
+      "id": "005",
+      "title": "Enter C300",
+      "date": "2026-02-05",
+      "image": "img/comics/005.jpg",
+      "alt": "Cera and Darknoud part ways; C300 arrives."
+    }
+  ]
+}
