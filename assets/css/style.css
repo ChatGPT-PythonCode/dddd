@@ -100,6 +100,9 @@ a:hover{text-decoration:underline}
   background:rgba(0,0,0,.72);
   padding:18px;
   z-index:9999;
+  /* Allow the overlay to scroll on small screens when the panel is taller than the viewport */
+  overflow-y:auto;
+  -webkit-overflow-scrolling: touch;
 }
 .reader[open]{display:block}
 .reader-panel{
@@ -109,6 +112,10 @@ a:hover{text-decoration:underline}
   border:1px solid var(--border);
   border-radius:var(--radius);
   overflow:hidden;
+  /* Constrain panel height so long images can be scrolled within */
+  max-height: calc(100dvh - 36px);
+  display:flex;
+  flex-direction:column;
   box-shadow: 0 20px 80px rgba(0,0,0,.55);
 }
 .reader-top{
@@ -138,9 +145,16 @@ a:hover{text-decoration:underline}
 .btn:hover{background:rgba(255,255,255,.10)}
 .btn[aria-disabled="true"]{opacity:.45; pointer-events:none}
 
-.reader-body{padding:14px}
+.reader-body{
+  padding:14px;
+  /* The body becomes the scroll container for tall pages */
+  overflow:auto;
+  -webkit-overflow-scrolling: touch;
+}
 .reader-img{
   width:100%;
+  height:auto;
+  display:block;
   border-radius:14px;
   border:1px solid var(--border);
   background:#000;
@@ -174,37 +188,56 @@ code{
   .reader-top{flex-direction:column; align-items:flex-start}
   .reader-top .controls{width:100%}
 }
-/* ===== MOBILE COMIC SCROLL FIX ===== */
 
-.modal-overlay {
-  position: fixed;
-  inset: 0;
-  background: rgba(0, 0, 0, 0.85);
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  overflow-y: auto; /* allow vertical scrolling */
-  padding: 20px;
-}
 
-.modal-panel {
-  background: #0a0a0a;
-  width: 100%;
-  max-width: 900px;
-  max-height: 100dvh; /* dynamic viewport height */
-  overflow-y: auto;
-  border-radius: 12px;
-}
-
-/* smooth scroll on iOS */
-.modal-panel,
-.modal-overlay {
+/* ===== Disclaimer modal (must acknowledge) ===== */
+.disclaimer{
+  position:fixed; inset:0;
+  display:none;
+  padding:20px;
+  align-items:center; justify-content:center;
+  background:rgba(0,0,0,.88);
+  z-index:10000;
+  overflow-y:auto;
   -webkit-overflow-scrolling: touch;
 }
-
-/* ensure images scale properly */
-.modal-panel img {
-  width: 100%;
-  height: auto;
-  display: block;
+.disclaimer[open]{display:flex}
+.disclaimer-panel{
+  width:min(760px, 100%);
+  background:rgba(18,20,27,.96);
+  border:1px solid var(--border);
+  border-radius:calc(var(--radius) + 4px);
+  box-shadow:0 24px 90px rgba(0,0,0,.6);
+  padding:18px 18px 16px;
+  max-height: calc(100dvh - 40px);
+  overflow:auto;
+  -webkit-overflow-scrolling: touch;
 }
+.disclaimer-panel h2{
+  margin:0 0 12px 0;
+  font-family: var(--font-retro);
+  font-size:16px;
+  line-height:1.45;
+  letter-spacing:1px;
+}
+.disclaimer-panel p{margin:0 0 10px 0}
+.disc-actions{
+  display:flex; justify-content:flex-end; gap:10px;
+  margin-top:14px;
+}
+.disc-primary{
+  background:rgba(255,255,255,.16);
+  border-color:rgba(255,255,255,.24);
+}
+.footer-link{
+  color:var(--muted);
+  text-decoration:none;
+  border-bottom:1px solid transparent;
+}
+.footer-link:hover{color:var(--text); border-bottom-color:rgba(255,255,255,.25)}
+
+/* small motion polish */
+.btn, .tile{
+  transition: transform .15s ease, background .15s ease, border-color .15s ease, box-shadow .15s ease;
+}
+.btn:active, .tile:active{transform: translateY(1px)}

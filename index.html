@@ -59,12 +59,12 @@
 
       <section class="card" data-panel="about" style="display:none">
         <h2>About</h2>
-        <p class="muted">I just make fun comics with ai.</p>
+        <p class="muted">Edit this section in <code>index.html</code>.</p>
         <p>
-          Contact: <a href="support@endless-online.com">email me</a>
+          Contact: <a href="mailto:you@example.com">you@example.com</a>
         </p>
         <p class="muted small">
-          
+          Tip: You can deep-link to a comic with <code>#c=001</code> (example: <code>.../index.html#c=001</code>).
         </p>
       </section>
 
@@ -72,9 +72,24 @@
     </main>
 
     <footer class="footer">
-      © <span id="siteTitleFooter">EO Webcomic</span>
+      © <span id="siteTitleFooter">EO Webcomic</span> · <a class="footer-link" href="#" id="openDisclaimer">Disclaimer</a>
     </footer>
   </div>
+
+
+  <!-- Disclaimer (must acknowledge) -->
+  <div class="disclaimer" id="disclaimer" role="dialog" aria-modal="true" aria-labelledby="discTitle">
+    <div class="disclaimer-panel" role="document">
+      <h2 id="discTitle">Viewer Discretion Advised</h2>
+      <p>This website contains crude humor, retro nonsense, and satire that may offend the extremely serious.</p>
+      <p>All characters and events depicted are entirely fictional. Even the ones that seem real.</p>
+      <p class="muted small">By continuing, you acknowledge this is satire and agree to proceed at your own risk.</p>
+      <div class="disc-actions">
+        <button class="btn disc-primary" id="discAccept" type="button">I Understand</button>
+      </div>
+    </div>
+  </div>
+
 
   <!-- Reader modal -->
   <div class="reader" id="reader" role="dialog" aria-modal="true" aria-label="Comic reader">
@@ -94,14 +109,7 @@
       <div class="reader-body">
         <img id="readerImg" class="reader-img" src="" alt="" />
         <div class="note">
-          The following website contains
-retro pixels, questionable jokes,
-and scenes that may be inappropriate
-for viewers who take the internet
-too seriously.
-
-All characters and events are fictional.
-Even the ones based on real idiots.
+          Put your images in <code>img/comics/</code> and name them <code>00.jpg</code>…<code>99.jpg</code> (or define your own list in <code>comics.json</code>).
         </div>
       </div>
     </div>

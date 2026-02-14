@@ -56,6 +56,31 @@ function closeReader() {
   document.body.style.overflow = '';
 }
 
+
+/* ===== Disclaimer gate (must acknowledge once) ===== */
+const DISCLAIMER_KEY = "eowebcomic_disclaimer_accepted_v1";
+
+function openDisclaimer() {
+  const d = document.getElementById('disclaimer');
+  if (!d) return;
+  d.setAttribute('open', '');
+  document.documentElement.style.overflow = 'hidden';
+}
+function closeDisclaimer() {
+  const d = document.getElementById('disclaimer');
+  if (!d) return;
+  d.removeAttribute('open');
+  document.documentElement.style.overflow = '';
+}
+function hasAcceptedDisclaimer() {
+  try { return localStorage.getItem(DISCLAIMER_KEY) === 'true'; } catch { return false; }
+}
+function acceptDisclaimer() {
+  try { localStorage.setItem(DISCLAIMER_KEY, 'true'); } catch {}
+  closeDisclaimer();
+}
+
+
 function setBtn(id, enabled, onClick) {
   const el = document.getElementById(id);
   if (!el) return;
@@ -178,6 +203,9 @@ function renderReader() {
 
 async function init() {
   try {
+    // Disclaimer gate
+    if (!hasAcceptedDisclaimer()) openDisclaimer();
+
     const data = await loadData();
     STATE.data = data;
     STATE.comics = [...(data.comics || [])].sort(byIdAscending);
@@ -203,6 +231,18 @@ async function init() {
     });
     setCurrentTab('archive');
 
+
+    // Disclaimer interactions
+    const discAccept = document.getElementById('discAccept');
+    if (discAccept) discAccept.addEventListener('click', acceptDisclaimer);
+    const openDisc = document.getElementById('openDisclaimer');
+    if (openDisc) openDisc.addEventListener('click', (e) => { e.preventDefault(); openDisclaimer(); });
+    const disc = document.getElementById('disclaimer');
+    if (disc) {
+      // Force acknowledgement: ignore overlay clicks + Escape when open
+      disc.addEventListener('click', (e) => { if (e.target === disc) { /* no-op */ } });
+    }
+
     // Archive quick actions
     const btnStart = document.getElementById('btnStart');
     if (btnStart) {
@@ -224,17 +264,57 @@ async function init() {
     }
 
     window.addEventListener('keydown', (e) => {
-      if (e.key === 'Escape') closeReader();
+      if (e.key === 'Escape') {
+        if (document.getElementById('disclaimer')?.hasAttribute('open')) return;
+        closeReader();
+      }
       const r = document.getElementById('reader');
       if (!r || !r.hasAttribute('open')) return;
       if (e.key === 'ArrowLeft') document.getElementById('btnPrev')?.click();
       if (e.key === 'ArrowRight') document.getElementById('btnNext')?.click();
     });
 
-    // Open from hash if present
+    
+    // Swipe navigation (mobile)
+    let touchStartX = 0, touchStartY = 0, touchActive = false;
+    const readerImg = document.getElementById('readerImg');
+    const swipeTarget = readerImg?.parentElement || document.getElementById('reader');
+    if (swipeTarget) {
+      swipeTarget.addEventListener('touchstart', (e) => {
+        if (!document.getElementById('reader')?.hasAttribute('open')) return;
+        const t = e.touches[0];
+        touchStartX = t.clientX; touchStartY = t.clientY;
+        touchActive = true;
+      }, { passive: true });
+
+      swipeTarget.addEventListener('touchend', (e) => {
+        if (!touchActive) return;
+        touchActive = false;
+        const t = e.changedTouches[0];
+        const dx = t.clientX - touchStartX;
+        const dy = t.clientY - touchStartY;
+        if (Math.abs(dx) < 60 || Math.abs(dx) < Math.abs(dy)) return;
+        if (dx < 0) document.getElementById('btnNext')?.click();   // swipe left → next
+        if (dx > 0) document.getElementById('btnPrev')?.click();   // swipe right → prev
+      }, { passive: true });
+    }
+
+// Open from hash if present
     const cid = getHashComic();
     if (cid) {
       setCurrentTab('archive');
+
+
+    // Disclaimer interactions
+    const discAccept = document.getElementById('discAccept');
+    if (discAccept) discAccept.addEventListener('click', acceptDisclaimer);
+    const openDisc = document.getElementById('openDisclaimer');
+    if (openDisc) openDisc.addEventListener('click', (e) => { e.preventDefault(); openDisclaimer(); });
+    const disc = document.getElementById('disclaimer');
+    if (disc) {
+      // Force acknowledgement: ignore overlay clicks + Escape when open
+      disc.addEventListener('click', (e) => { if (e.target === disc) { /* no-op */ } });
+    }
       openComicById(cid);
     }
 
